@@ -6,6 +6,7 @@ import org.springframework.util.Assert;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,13 +20,16 @@ public class Produto implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     @NotBlank
     private String nome;
 
+    @Column(nullable = false)
     @DecimalMin(value = "1.00")
     private BigDecimal preco;
 
     @JsonIgnore
+    @NotNull
     @ManyToMany
     @JoinTable(name = "PRODUTO_CATEGORIA",
             joinColumns = @JoinColumn(name = "produto_id"),

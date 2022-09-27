@@ -4,32 +4,29 @@ import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Categoria implements Serializable {
+public class Estado implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank(message = "O campo 'nome' possui um valor inválido.")
+    @NotBlank
     private String nome;
 
-    @NotNull
-    @ManyToMany(mappedBy = "categorias")
-    private List<Produto> produtos = new ArrayList<>();
+    @OneToMany(mappedBy = "estado")
+    private List<Cidade> cidades = new ArrayList<>();
 
-    public Categoria() {
+    public Estado() {
     }
 
-    public Categoria(Long id, String nome) {
+    public Estado(Long id, String nome) {
         validarArgumento(nome);
         this.id = id;
         this.nome = nome;
@@ -47,20 +44,20 @@ public class Categoria implements Serializable {
         return nome;
     }
 
-    public List<Produto> getProdutos() {
-        return produtos;
+    public List<Cidade> getCidades() {
+        return cidades;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Categoria categoria = (Categoria) o;
-        return Objects.equals(nome, categoria.nome);
+        Estado estado = (Estado) o;
+        return Objects.equals(id, estado.id) && Objects.equals(nome, estado.nome);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nome);
+        return Objects.hash(id, nome);
     }
 }

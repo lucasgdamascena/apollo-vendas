@@ -5,38 +5,38 @@ import org.springframework.util.Assert;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Categoria implements Serializable {
+public class Cidade implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank(message = "O campo 'nome' possui um valor inválido.")
+    @NotBlank
     private String nome;
 
     @NotNull
-    @ManyToMany(mappedBy = "categorias")
-    private List<Produto> produtos = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "estado_id")
+    private Estado estado;
 
-    public Categoria() {
+    public Cidade() {
     }
 
-    public Categoria(Long id, String nome) {
-        validarArgumento(nome);
+    public Cidade(Long id, String nome, Estado estado) {
+        validarArgumento(nome, estado);
         this.id = id;
         this.nome = nome;
+        this.estado = estado;
     }
 
-    private void validarArgumento(String nome) {
+    private void validarArgumento(String nome, Estado estado) {
         Assert.hasText(nome, "O argumento 'nome' deve ser preenchido.");
+        Assert.notNull(estado, "O argumento 'estado' não possui valor definido.");
     }
 
     public Long getId() {
@@ -47,20 +47,16 @@ public class Categoria implements Serializable {
         return nome;
     }
 
-    public List<Produto> getProdutos() {
-        return produtos;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Categoria categoria = (Categoria) o;
-        return Objects.equals(nome, categoria.nome);
+        Cidade cidade = (Cidade) o;
+        return Objects.equals(id, cidade.id) && Objects.equals(nome, cidade.nome);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nome);
+        return Objects.hash(id, nome);
     }
 }
