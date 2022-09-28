@@ -28,13 +28,13 @@ public class Cidade implements Serializable {
     }
 
     public Cidade(Long id, String nome, Estado estado) {
-        validarArgumento(nome, estado);
+        validarArgumentos(nome, estado);
         this.id = id;
         this.nome = nome;
         this.estado = estado;
     }
 
-    private void validarArgumento(String nome, Estado estado) {
+    private void validarArgumentos(String nome, Estado estado) {
         Assert.hasText(nome, "O argumento 'nome' deve ser preenchido.");
         Assert.notNull(estado, "O argumento 'estado' não possui valor definido.");
     }
@@ -45,6 +45,10 @@ public class Cidade implements Serializable {
 
     public String getNome() {
         return nome;
+    }
+
+    public Estado getEstado() {
+        return estado;
     }
 
     @Override

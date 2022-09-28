@@ -19,7 +19,7 @@ public class Categoria implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank(message = "O campo 'nome' possui um valor inválido.")
+    @NotBlank
     private String nome;
 
     @NotNull

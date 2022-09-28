@@ -1,5 +1,6 @@
 package com.damascena.apollovendas.domains;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public class Estado implements Serializable {
     @NotBlank
     private String nome;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "estado")
     private List<Cidade> cidades = new ArrayList<>();
 
