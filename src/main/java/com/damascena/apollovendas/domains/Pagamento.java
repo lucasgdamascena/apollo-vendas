@@ -1,6 +1,7 @@
 package com.damascena.apollovendas.domains;
 
 import com.damascena.apollovendas.domains.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public abstract class Pagamento implements Serializable {
     @NotNull
     private Integer estadoPagamento;
 
+    @JsonIgnore
     @NotBlank
     @OneToOne
     @JoinColumn(name = "pedido_id")

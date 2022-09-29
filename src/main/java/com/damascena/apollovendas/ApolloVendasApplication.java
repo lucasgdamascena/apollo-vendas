@@ -40,6 +40,9 @@ public class ApolloVendasApplication implements CommandLineRunner {
     @Autowired
     private PagamentoRepository pagamentoRepository;
 
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(ApolloVendasApplication.class, args);
     }
@@ -106,5 +109,21 @@ public class ApolloVendasApplication implements CommandLineRunner {
 
         pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
         pagamentoRepository.saveAll(Arrays.asList(pagamento1, pagamento2));
+
+        ItemPedido itemPedido1 = new ItemPedido(pedido1, produto1,
+                new BigDecimal("0.00"), 1, new BigDecimal("2000.00"));
+        ItemPedido itemPedido2 = new ItemPedido(pedido1, produto3,
+                new BigDecimal("0.00"), 2, new BigDecimal("80.00"));
+        ItemPedido itemPedido3 = new ItemPedido(pedido2, produto2,
+                new BigDecimal("100.00"), 1, new BigDecimal("800.00"));
+
+        pedido1.getItensPedidos().addAll(Arrays.asList(itemPedido1, itemPedido2));
+        pedido2.getItensPedidos().addAll(Arrays.asList(itemPedido3));
+
+        produto1.getItensPedidos().addAll(Arrays.asList(itemPedido1));
+        produto2.getItensPedidos().addAll(Arrays.asList(itemPedido3));
+        produto3.getItensPedidos().addAll(Arrays.asList(itemPedido2));
+
+        itemPedidoRepository.saveAll(Arrays.asList(itemPedido1, itemPedido2, itemPedido3));
     }
 }

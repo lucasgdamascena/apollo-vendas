@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 public class CategoriaController {
 
     @Autowired
-    private CategoriaService service;
+    private CategoriaService servico;
 
     @GetMapping(value = "/{id}")
     public ResponseEntity selecionar(@PathVariable("id") Long id) {
-        Categoria categoria = service.selecionar(id);
+        Categoria categoria = servico.selecionar(id);
         return ResponseEntity.ok().body(categoria);
     }
 }

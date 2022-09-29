@@ -9,9 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class Produto implements Serializable {
@@ -35,6 +33,10 @@ public class Produto implements Serializable {
             joinColumns = @JoinColumn(name = "produto_id"),
             inverseJoinColumns = @JoinColumn(name = "categoria_id"))
     private List<Categoria> categorias = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "id.produto")
+    private Set<ItemPedido> itensPedidos = new HashSet<>();
 
     public Produto() {
     }
@@ -66,6 +68,20 @@ public class Produto implements Serializable {
 
     public List<Categoria> getCategorias() {
         return categorias;
+    }
+
+    public Set<ItemPedido> getItensPedidos() {
+        return itensPedidos;
+    }
+
+    @JsonIgnore
+    public List<Pedido> getPedidos(){
+        List<Pedido> pedidos = new ArrayList<>();
+        for(ItemPedido itemPedido : itensPedidos){
+            pedidos.add(itemPedido.getPedido());
+        }
+
+        return pedidos;
     }
 
     @Override

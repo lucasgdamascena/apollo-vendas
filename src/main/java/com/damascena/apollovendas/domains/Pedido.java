@@ -6,7 +6,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Pedido implements Serializable {
@@ -30,23 +32,26 @@ public class Pedido implements Serializable {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "endereco_id")
-    private Endereco endereco;
+    @JoinColumn(name = "endereco_de_entrega_id")
+    private Endereco enderecoDeEntrega;
+
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<ItemPedido> itensPedidos = new HashSet<>();
 
     public Pedido() {
     }
 
-    public Pedido(Long id, Cliente cliente, Endereco endereco) {
-        validarArgumentos(cliente, endereco);
+    public Pedido(Long id, Cliente cliente, Endereco enderecoDeEntrega) {
+        validarArgumentos(cliente, enderecoDeEntrega);
         this.id = id;
         this.instante = LocalDateTime.now();
         this.cliente = cliente;
-        this.endereco = endereco;
+        this.enderecoDeEntrega = enderecoDeEntrega;
     }
 
-    private void validarArgumentos(Cliente cliente, Endereco endereco) {
+    private void validarArgumentos(Cliente cliente, Endereco enderecoDeEntrega) {
         Assert.notNull(cliente, "O argumento 'cliente' não possui valor definido.");
-        Assert.notNull(endereco, "O argumento 'endereco' não possui valor definido.");
+        Assert.notNull(enderecoDeEntrega, "O argumento 'enderecoDeEntrega' não possui valor definido.");
     }
 
     public Long getId() {
@@ -69,8 +74,12 @@ public class Pedido implements Serializable {
         return cliente;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
+    public Endereco getEnderecoDeEntrega() {
+        return enderecoDeEntrega;
+    }
+
+    public Set<ItemPedido> getItensPedidos() {
+        return itensPedidos;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.damascena.apollovendas.controllers;
 
-import com.damascena.apollovendas.domains.Cliente;
-import com.damascena.apollovendas.services.ClienteService;
+import com.damascena.apollovendas.domains.Pedido;
+import com.damascena.apollovendas.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/clientes")
-public class ClienteController {
+@RequestMapping(value = "/pedidos")
+public class PedidoController {
 
     @Autowired
-    private ClienteService servico;
+    private PedidoService servico;
 
     @GetMapping(value = "/{id}")
     public ResponseEntity selecionar(@PathVariable("id") Long id) {
-        Cliente cliente = servico.selecionar(id);
-        return ResponseEntity.ok().body(cliente);
+        Pedido pedido = servico.selecionar(id);
+        return ResponseEntity.ok().body(pedido);
     }
 }
