@@ -50,8 +50,8 @@ public class ApolloVendasApplication implements CommandLineRunner {
     //OPERAÇÃO DE INSTANCIAÇÃO
     @Override
     public void run(String... args) throws Exception {
-        Categoria categoria1 = new Categoria(null, "Informática");
-        Categoria categoria2 = new Categoria(null, "Escritório");
+        Categoria categoria1 = new Categoria("Informática");
+        Categoria categoria2 = new Categoria("Escritório");
 
         Produto produto1 = new Produto(null, "Computador", new BigDecimal("2000.00"));
         Produto produto2 = new Produto(null, "Impressora", new BigDecimal("800.00"));

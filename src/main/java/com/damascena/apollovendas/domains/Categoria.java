@@ -26,12 +26,12 @@ public class Categoria implements Serializable {
     @ManyToMany(mappedBy = "categorias")
     private List<Produto> produtos = new ArrayList<>();
 
+    @Deprecated
     public Categoria() {
     }
 
-    public Categoria(Long id, String nome) {
+    public Categoria(String nome) {
         validarArgumento(nome);
-        this.id = id;
         this.nome = nome;
     }
 
@@ -45,6 +45,10 @@ public class Categoria implements Serializable {
 
     public String getNome() {
         return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public List<Produto> getProdutos() {

@@ -15,6 +15,7 @@ public class PagamentoComBoleto extends Pagamento {
     @Column(nullable = true)
     private Date dataPagamento;
 
+    @Deprecated
     public PagamentoComBoleto() {
     }
 

@@ -28,6 +28,7 @@ public abstract class Pagamento implements Serializable {
     @MapsId
     private Pedido pedido;
 
+    @Deprecated
     public Pagamento() {
     }
 

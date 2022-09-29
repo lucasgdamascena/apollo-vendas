@@ -19,6 +19,7 @@ public class ItemPedido implements Serializable {
     private Integer quantidade;
     private BigDecimal preco;
 
+    @Deprecated
     public ItemPedido() {
     }
 

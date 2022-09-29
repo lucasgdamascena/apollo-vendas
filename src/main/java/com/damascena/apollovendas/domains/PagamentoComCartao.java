@@ -11,6 +11,7 @@ public class PagamentoComCartao extends Pagamento {
     @Column(nullable = true)
     private Integer numeroDeParcelas;
 
+    @Deprecated
     public PagamentoComCartao() {
     }
 

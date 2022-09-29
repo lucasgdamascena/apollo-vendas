@@ -38,6 +38,7 @@ public class Produto implements Serializable {
     @OneToMany(mappedBy = "id.produto")
     private Set<ItemPedido> itensPedidos = new HashSet<>();
 
+    @Deprecated
     public Produto() {
     }
 

@@ -24,6 +24,7 @@ public class Cidade implements Serializable {
     @JoinColumn(name = "estado_id")
     private Estado estado;
 
+    @Deprecated
     public Cidade() {
     }
 
