@@ -8,6 +8,9 @@ import com.damascena.apollovendas.services.exceptions.ObjetoNaoEncontradoExcepti
 import com.damascena.apollovendas.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,5 +59,13 @@ public class CategoriaService {
                 categorias.stream().map(c -> new ListaCategoriaResponse(c)).collect(Collectors.toList());
 
         return listaCategoriaResponse;
+    }
+
+    public Page<Categoria> selecionarPaginado(Integer pagina,
+                                              Integer linhasPorPagina,
+                                              String direcao,
+                                              String ordenarPor) {
+        PageRequest pageRequest = PageRequest.of(pagina, linhasPorPagina, Sort.Direction.valueOf(direcao), ordenarPor);
+        return repositorio.findAll(pageRequest);
     }
 }
