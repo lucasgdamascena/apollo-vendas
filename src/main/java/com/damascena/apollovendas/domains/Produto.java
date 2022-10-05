@@ -42,9 +42,8 @@ public class Produto implements Serializable {
     public Produto() {
     }
 
-    public Produto(Long id, String nome, BigDecimal preco) {
+    public Produto(String nome, BigDecimal preco) {
         validarArgumentos(nome, preco);
-        this.id = id;
         this.nome = nome;
         this.preco = preco;
     }
@@ -52,7 +51,7 @@ public class Produto implements Serializable {
     private void validarArgumentos(String nome, BigDecimal preco) {
         Assert.hasText(nome, "O argumento 'nome' deve ser preenchido.");
         Assert.isTrue(preco.compareTo(BigDecimal.valueOf(1.00)) != -1,
-                "O argumento 'valor' deve ser maior que 1.00");
+                "O argumento 'preco' deve ser maior que 1.00");
     }
 
     public Long getId() {
@@ -76,9 +75,9 @@ public class Produto implements Serializable {
     }
 
     @JsonIgnore
-    public List<Pedido> getPedidos(){
+    public List<Pedido> getPedidos() {
         List<Pedido> pedidos = new ArrayList<>();
-        for(ItemPedido itemPedido : itensPedidos){
+        for (ItemPedido itemPedido : itensPedidos) {
             pedidos.add(itemPedido.getPedido());
         }
 

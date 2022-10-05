@@ -42,9 +42,8 @@ public class Pedido implements Serializable {
     public Pedido() {
     }
 
-    public Pedido(Long id, Cliente cliente, Endereco enderecoDeEntrega) {
+    public Pedido(Cliente cliente, Endereco enderecoDeEntrega) {
         validarArgumentos(cliente, enderecoDeEntrega);
-        this.id = id;
         this.instante = LocalDateTime.now();
         this.cliente = cliente;
         this.enderecoDeEntrega = enderecoDeEntrega;

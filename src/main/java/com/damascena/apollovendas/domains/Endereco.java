@@ -51,10 +51,9 @@ public class Endereco implements Serializable {
     public Endereco() {
     }
 
-    public Endereco(Long id, String logradouro, String numero, String complemento,
+    public Endereco(String logradouro, String numero, String complemento,
                     String bairro, String cep, Cliente cliente, Cidade cidade) {
         validarArgumentos(logradouro, numero, complemento, bairro, cep, cliente, cidade);
-        this.id = id;
         this.logradouro = logradouro;
         this.numero = numero;
         this.complemento = complemento;

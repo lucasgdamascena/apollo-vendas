@@ -28,9 +28,8 @@ public class Cidade implements Serializable {
     public Cidade() {
     }
 
-    public Cidade(Long id, String nome, Estado estado) {
+    public Cidade(String nome, Estado estado) {
         validarArgumentos(nome, estado);
-        this.id = id;
         this.nome = nome;
         this.estado = estado;
     }

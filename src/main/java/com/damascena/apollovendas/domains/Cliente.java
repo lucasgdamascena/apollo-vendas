@@ -50,9 +50,8 @@ public class Cliente implements Serializable {
     public Cliente() {
     }
 
-    public Cliente(Long id, String nome, String email, String documento, TipoCliente tipoCliente) {
+    public Cliente(String nome, String email, String documento, TipoCliente tipoCliente) {
         validarArgumentos(nome, email, documento, tipoCliente);
-        this.id = id;
         this.nome = nome;
         this.email = email;
         this.documento = documento;
