@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -18,6 +20,8 @@ public abstract class Pagamento implements Serializable {
 
     @Column(nullable = false)
     @NotNull
+    @Positive
+    @Max(value = 2)
     private Integer estadoPagamento;
 
     @JsonIgnore

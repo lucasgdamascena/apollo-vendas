@@ -4,13 +4,12 @@ import com.damascena.apollovendas.domains.Cidade;
 import com.damascena.apollovendas.domains.Cliente;
 import com.damascena.apollovendas.domains.Endereco;
 import com.damascena.apollovendas.domains.enums.TipoCliente;
+import com.damascena.apollovendas.services.validations.ClienteInsert;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Optional;
 
+@ClienteInsert
 public class CadastrarClienteRequest {
 
     @NotBlank(message = "Preenchimento obrigatório")
@@ -25,6 +24,8 @@ public class CadastrarClienteRequest {
     private String documento;
 
     @NotNull(message = "Valor Inválido")
+    @Positive
+    @Max(value = 2, message = "Escolha um valor válido" )
     private Integer tipoCliente;
 
     @NotBlank(message = "Preenchimento obrigatório")

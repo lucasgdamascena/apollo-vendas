@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.*;
 
@@ -33,6 +31,8 @@ public class Cliente implements Serializable {
 
     @Column(nullable = false)
     @NotNull
+    @Positive
+    @Max(value = 2)
     private Integer tipoCliente;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
