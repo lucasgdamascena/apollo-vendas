@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
@@ -22,7 +21,7 @@ public abstract class Pagamento implements Serializable {
     private Integer estadoPagamento;
 
     @JsonIgnore
-    @NotBlank
+    @NotNull
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId
