@@ -57,13 +57,13 @@ public class CategoriaController {
     }
 
     @PatchMapping(value = "/{id}")
-    public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid AtualizarCategoriaRequest request) {
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody @Valid AtualizarCategoriaRequest request) {
         servico.atualizar(id, request);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity deletar(@PathVariable Long id) {
+    public ResponseEntity deletar(@PathVariable("id") Long id) {
         servico.deletar(id);
         return ResponseEntity.noContent().build();
     }

@@ -24,8 +24,7 @@ public class Endereco implements Serializable {
     @NotBlank
     private String numero;
 
-    @Column(nullable = false)
-    @NotBlank
+    @Column(nullable = true)
     private String complemento;
 
     @Column(nullable = false)
@@ -53,7 +52,7 @@ public class Endereco implements Serializable {
 
     public Endereco(String logradouro, String numero, String complemento,
                     String bairro, String cep, Cliente cliente, Cidade cidade) {
-        validarArgumentos(logradouro, numero, complemento, bairro, cep, cliente, cidade);
+        validarArgumentos(logradouro, numero, bairro, cep, cliente, cidade);
         this.logradouro = logradouro;
         this.numero = numero;
         this.complemento = complemento;
@@ -63,11 +62,10 @@ public class Endereco implements Serializable {
         this.cidade = cidade;
     }
 
-    private void validarArgumentos(String logradouro, String numero, String complemento,
-                                   String bairro, String cep, Cliente cliente, Cidade cidade) {
+    private void validarArgumentos(String logradouro, String numero, String bairro,
+                                   String cep, Cliente cliente, Cidade cidade) {
         Assert.hasText(logradouro, "O argumento 'logradouro' deve ser preenchido.");
         Assert.hasText(numero, "O argumento 'numero' deve ser preenchido.");
-        Assert.hasText(complemento, "O argumento 'complemento' deve ser preenchido.");
         Assert.hasText(bairro, "O argumento 'bairro' deve ser preenchido.");
         Assert.hasText(cep, "O argumento 'cep' deve ser preenchido.");
         Assert.notNull(cliente, "O argumento 'cliente' não possui valor definido.");
