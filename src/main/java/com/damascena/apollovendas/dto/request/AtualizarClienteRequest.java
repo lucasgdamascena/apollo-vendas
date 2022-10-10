@@ -1,9 +1,12 @@
 package com.damascena.apollovendas.dto.request;
 
+import com.damascena.apollovendas.services.validations.ClienteUpdate;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@ClienteUpdate
 public class AtualizarClienteRequest {
 
     @NotBlank(message = "Preenchimento obrigatório")

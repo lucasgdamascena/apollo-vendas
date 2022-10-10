@@ -1,7 +1,5 @@
 package com.damascena.apollovendas.dto.request;
 
-import com.damascena.apollovendas.domains.Categoria;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
