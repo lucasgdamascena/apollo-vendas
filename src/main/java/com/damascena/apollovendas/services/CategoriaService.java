@@ -7,7 +7,7 @@ import com.damascena.apollovendas.dto.response.ListaCategoriaResponse;
 import com.damascena.apollovendas.services.exceptions.IntegridadeVioladaException;
 import com.damascena.apollovendas.services.exceptions.ObjetoNaoEncontradoException;
 import com.damascena.apollovendas.repositories.CategoriaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,11 +23,14 @@ import java.util.stream.Collectors;
 @Service
 public class CategoriaService {
 
-    @Autowired
-    private CategoriaRepository repositorio;
+    private CategoriaRepository categoriaRepository;
+
+    public CategoriaService(CategoriaRepository categoriaRepository) {
+        this.categoriaRepository = categoriaRepository;
+    }
 
     public List<ListaCategoriaResponse> selecionar() {
-        List<Categoria> categorias = repositorio.findAll();
+        List<Categoria> categorias = categoriaRepository.findAll();
         List<ListaCategoriaResponse> listaCategoriaResponse =
                 categorias.stream().map(c -> new ListaCategoriaResponse(c)).collect(Collectors.toList());
 
@@ -35,7 +38,7 @@ public class CategoriaService {
     }
 
     public Categoria selecionarPorId(Long id) {
-        Optional<Categoria> categoria = repositorio.findById(id);
+        Optional<Categoria> categoria = categoriaRepository.findById(id);
         return categoria.orElseThrow(() ->
                 new ObjetoNaoEncontradoException("Objeto não encontrado. Id: " + id + ", Tipo: " + Categoria.class));
     }
@@ -45,12 +48,12 @@ public class CategoriaService {
                                               String direcao,
                                               String ordenarPor) {
         PageRequest pageRequest = PageRequest.of(pagina, linhasPorPagina, Sort.Direction.valueOf(direcao), ordenarPor);
-        return repositorio.findAll(pageRequest);
+        return categoriaRepository.findAll(pageRequest);
     }
 
     public Categoria inserir(@RequestBody @Valid CadastrarCategoriaRequest request) {
         Categoria categoria = request.toCategoria();
-        repositorio.save(categoria);
+        categoriaRepository.save(categoria);
 
         return categoria;
     }
@@ -59,14 +62,14 @@ public class CategoriaService {
         Categoria categoriaEncontrada = selecionarPorId(id);
         categoriaEncontrada.setNome(request.getNome());
 
-        repositorio.save(categoriaEncontrada);
+        categoriaRepository.save(categoriaEncontrada);
     }
 
     public void deletar(Long id) {
         selecionarPorId(id);
 
         try {
-            repositorio.deleteById(id);
+            categoriaRepository.deleteById(id);
         } catch (DataIntegrityViolationException ex) {
             throw new IntegridadeVioladaException("Não é possível deletar uma categoria que tenha produtos.");
         }

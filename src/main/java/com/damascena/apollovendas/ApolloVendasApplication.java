@@ -62,17 +62,38 @@ public class ApolloVendasApplication implements CommandLineRunner {
         Produto produto1 = new Produto("Computador", new BigDecimal("2000.00"));
         Produto produto2 = new Produto("Impressora", new BigDecimal("800.00"));
         Produto produto3 = new Produto("Mouse", new BigDecimal("80.00"));
+        Produto produto4 = new Produto("Mesa de escritório", new BigDecimal("300.00"));
+        Produto produto5 = new Produto("Toalha", new BigDecimal("50.00"));
+        Produto produto6 = new Produto("Colcha", new BigDecimal("200.00"));
+        Produto produto7 = new Produto("TV", new BigDecimal("1200.00"));
+        Produto produto8 = new Produto("Roçadeira", new BigDecimal("800.00"));
+        Produto produto9 = new Produto("Abajur", new BigDecimal("100.00"));
+        Produto produto10 = new Produto("Condicionador", new BigDecimal("180.00"));
+        Produto produto11 = new Produto("Shampoo", new BigDecimal("90.00"));
 
-        categoria1.getProdutos().addAll(Arrays.asList(produto1, produto2, produto3));
-        categoria2.getProdutos().addAll(Collections.singletonList(produto2));
+        categoria2.getProdutos().addAll(Arrays.asList(produto2, produto4));
+        categoria3.getProdutos().addAll(Arrays.asList(produto5, produto6));
+        categoria4.getProdutos().addAll(Arrays.asList(produto1, produto2, produto3, produto7));
+        categoria5.getProdutos().addAll(Collections.singletonList(produto8));
+        categoria6.getProdutos().addAll(Arrays.asList(produto9, produto10));
+        categoria7.getProdutos().addAll(Collections.singletonList(produto11));
 
-        produto1.getCategorias().addAll(Collections.singletonList(categoria1));
-        produto2.getCategorias().addAll(Arrays.asList(categoria1, categoria2));
-        produto3.getCategorias().addAll(Collections.singletonList(categoria1));
+        produto1.getCategorias().addAll(Arrays.asList(categoria1, categoria4));
+        produto2.getCategorias().addAll(Arrays.asList(categoria1, categoria2, categoria4));
+        produto3.getCategorias().addAll(Arrays.asList(categoria1, categoria4));
+        produto4.getCategorias().addAll(Collections.singletonList(categoria2));
+        produto5.getCategorias().addAll(Collections.singletonList(categoria3));
+        produto6.getCategorias().addAll(Collections.singletonList(categoria3));
+        produto7.getCategorias().addAll(Collections.singletonList(categoria4));
+        produto8.getCategorias().addAll(Collections.singletonList(categoria5));
+        produto9.getCategorias().addAll(Collections.singletonList(categoria6));
+        produto10.getCategorias().addAll(Collections.singletonList(categoria6));
+        produto11.getCategorias().addAll(Collections.singletonList(categoria7));
 
         categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2,
                 categoria3, categoria4, categoria5, categoria6, categoria7));
-        produtoRepository.saveAll(Arrays.asList(produto1, produto2, produto3));
+        produtoRepository.saveAll(Arrays.asList(produto1, produto2, produto3, produto4, produto5, produto6,
+                produto7, produto8, produto9, produto10, produto11));
 
         Estado estado1 = new Estado("Minas Gerais");
         Estado estado2 = new Estado("São Paulo");

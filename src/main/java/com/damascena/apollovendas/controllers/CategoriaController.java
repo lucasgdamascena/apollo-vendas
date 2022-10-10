@@ -5,7 +5,7 @@ import com.damascena.apollovendas.dto.request.AtualizarCategoriaRequest;
 import com.damascena.apollovendas.dto.request.CadastrarCategoriaRequest;
 import com.damascena.apollovendas.dto.response.ListaCategoriaResponse;
 import com.damascena.apollovendas.services.CategoriaService;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,18 +21,21 @@ import java.util.List;
 @Validated
 public class CategoriaController {
 
-    @Autowired
-    private CategoriaService servico;
+    private CategoriaService categoriaService;
+
+    public CategoriaController(CategoriaService categoriaService) {
+        this.categoriaService = categoriaService;
+    }
 
     @GetMapping
     public ResponseEntity<List<ListaCategoriaResponse>> selecionar() {
-        List<ListaCategoriaResponse> listaCategoriaResponses = servico.selecionar();
+        List<ListaCategoriaResponse> listaCategoriaResponses = categoriaService.selecionar();
         return ResponseEntity.ok().body(listaCategoriaResponses);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity selecionarPorId(@PathVariable("id") Long id) {
-        Categoria categoria = servico.selecionarPorId(id);
+        Categoria categoria = categoriaService.selecionarPorId(id);
         return ResponseEntity.ok().body(categoria);
     }
 
@@ -41,7 +44,7 @@ public class CategoriaController {
                                                                            @RequestParam(value = "linhasPorPagina", defaultValue = "24") Integer linhasPorPagina,
                                                                            @RequestParam(value = "direcao", defaultValue = "ASC") String direcao,
                                                                            @RequestParam(value = "ordenarPor", defaultValue = "nome") String ordenarPor) {
-        Page<Categoria> categoriasPaginadas = servico.selecionarPaginado(pagina, linhasPorPagina, direcao, ordenarPor);
+        Page<Categoria> categoriasPaginadas = categoriaService.selecionarPaginado(pagina, linhasPorPagina, direcao, ordenarPor);
         Page<ListaCategoriaResponse> categoriasPaginadasResponse =
                 categoriasPaginadas.map(obj -> new ListaCategoriaResponse(obj));
         return ResponseEntity.ok().body(categoriasPaginadasResponse);
@@ -49,7 +52,7 @@ public class CategoriaController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity inserir(@RequestBody @Valid CadastrarCategoriaRequest request) {
-        Categoria categoria = servico.inserir(request);
+        Categoria categoria = categoriaService.inserir(request);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(categoria.getId()).toUri();
 
@@ -58,13 +61,13 @@ public class CategoriaController {
 
     @PatchMapping(value = "/{id}")
     public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody @Valid AtualizarCategoriaRequest request) {
-        servico.atualizar(id, request);
+        categoriaService.atualizar(id, request);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity deletar(@PathVariable("id") Long id) {
-        servico.deletar(id);
+        categoriaService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }
