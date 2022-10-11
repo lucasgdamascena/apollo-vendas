@@ -5,6 +5,7 @@ import org.springframework.util.Assert;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -56,6 +57,15 @@ public class Pedido implements Serializable {
 
     public Long getId() {
         return id;
+    }
+
+    public BigDecimal getValorTotal(){
+        BigDecimal valorTotal = new BigDecimal("0.00");
+
+        for(ItemPedido itemPedido : itensPedidos){
+            valorTotal = valorTotal.add(itemPedido.getSubTotal());
+        }
+        return valorTotal;
     }
 
     public LocalDateTime getInstante() {

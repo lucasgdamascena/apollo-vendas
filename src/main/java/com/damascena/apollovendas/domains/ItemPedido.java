@@ -35,6 +35,10 @@ public class ItemPedido implements Serializable {
         return id;
     }
 
+    public BigDecimal getSubTotal() {
+        return (preco.subtract(desconto)).multiply(BigDecimal.valueOf(quantidade));
+    }
+
     @JsonIgnore
     public Pedido getPedido() {
         return id.getPedido();

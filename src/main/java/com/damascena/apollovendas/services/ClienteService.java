@@ -24,7 +24,9 @@ public class ClienteService {
     private CidadeRepository cidadeRepository;
     private EnderecoRepository enderecoRepository;
 
-    public ClienteService(ClienteRepository clienteRepository, CidadeRepository cidadeRepository, EnderecoRepository enderecoRepository) {
+    public ClienteService(ClienteRepository clienteRepository,
+                          CidadeRepository cidadeRepository,
+                          EnderecoRepository enderecoRepository) {
         this.clienteRepository = clienteRepository;
         this.cidadeRepository = cidadeRepository;
         this.enderecoRepository = enderecoRepository;
