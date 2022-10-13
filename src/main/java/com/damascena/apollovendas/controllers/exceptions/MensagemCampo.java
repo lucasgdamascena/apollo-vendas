@@ -7,8 +7,7 @@ public class MensagemCampo implements Serializable {
     private String nomeCampo;
     private String mensagem;
 
-    public MensagemCampo() {
-    }
+    public MensagemCampo() { }
 
     public MensagemCampo(String nomeCampo, String mensagem) {
         this.nomeCampo = nomeCampo;

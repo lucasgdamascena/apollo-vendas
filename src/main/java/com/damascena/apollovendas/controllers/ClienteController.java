@@ -29,8 +29,8 @@ public class ClienteController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity inserir(@RequestBody @Valid CadastrarClienteRequest request) {
-        Cliente cliente = clienteService.inserir(request);
+    public ResponseEntity inserir(@RequestBody @Valid CadastrarClienteRequest cadastrarClienteRequest) {
+        Cliente cliente = clienteService.inserir(cadastrarClienteRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(cliente.getId()).toUri();
 
@@ -38,8 +38,9 @@ public class ClienteController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody @Valid AtualizarClienteRequest request) {
-        clienteService.atualizar(id, request);
+    public ResponseEntity atualizar(@PathVariable("id") Long id,
+                                    @RequestBody @Valid AtualizarClienteRequest atualizarClienteRequest) {
+        clienteService.atualizar(id, atualizarClienteRequest);
         return ResponseEntity.noContent().build();
     }
 

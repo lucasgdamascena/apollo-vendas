@@ -51,8 +51,8 @@ public class CategoriaController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity inserir(@RequestBody @Valid CadastrarCategoriaRequest request) {
-        Categoria categoria = categoriaService.inserir(request);
+    public ResponseEntity inserir(@RequestBody @Valid CadastrarCategoriaRequest cadastrarCategoriaRequest) {
+        Categoria categoria = categoriaService.inserir(cadastrarCategoriaRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(categoria.getId()).toUri();
 
@@ -60,8 +60,9 @@ public class CategoriaController {
     }
 
     @PatchMapping(value = "/{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody @Valid AtualizarCategoriaRequest request) {
-        categoriaService.atualizar(id, request);
+    public ResponseEntity atualizar(@PathVariable("id") Long id,
+                                    @RequestBody @Valid AtualizarCategoriaRequest atualizarCategoriaRequest) {
+        categoriaService.atualizar(id, atualizarCategoriaRequest);
         return ResponseEntity.noContent().build();
     }
 

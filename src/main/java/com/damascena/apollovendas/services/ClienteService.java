@@ -12,9 +12,7 @@ import com.damascena.apollovendas.services.exceptions.ObjetoNaoEncontradoExcepti
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import java.util.Optional;
 
 @Service
@@ -38,18 +36,18 @@ public class ClienteService {
                 new ObjetoNaoEncontradoException("Objeto não encontrado. Id: " + id + ", Tipo: " + Cliente.class));
     }
 
-    public Cliente inserir(@RequestBody @Valid CadastrarClienteRequest request) {
-        Optional<Cidade> cidade = cidadeRepository.findById(request.getCidadeId());
-        Cliente cliente = clienteRepository.save(request.toCliente(cidade));
+    public Cliente inserir(CadastrarClienteRequest cadastrarClienteRequest) {
+        Optional<Cidade> cidade = cidadeRepository.findById(cadastrarClienteRequest.getCidadeId());
+        Cliente cliente = clienteRepository.save(cadastrarClienteRequest.toCliente(cidade));
         enderecoRepository.save(cliente.getEnderecos().get(0));
 
         return cliente;
     }
 
-    public void atualizar(Long id, AtualizarClienteRequest request) {
+    public void atualizar(Long id, AtualizarClienteRequest atualizarClienteRequest) {
         Cliente clienteEncontrado = selecionarPorId(id);
-        clienteEncontrado.setNome(request.getNome());
-        clienteEncontrado.setEmail(request.getEmail());
+        clienteEncontrado.setNome(atualizarClienteRequest.getNome());
+        clienteEncontrado.setEmail(atualizarClienteRequest.getEmail());
 
         clienteRepository.save(clienteEncontrado);
     }

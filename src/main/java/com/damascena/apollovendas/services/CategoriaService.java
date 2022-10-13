@@ -13,9 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,16 +49,16 @@ public class CategoriaService {
         return categoriaRepository.findAll(pageRequest);
     }
 
-    public Categoria inserir(@RequestBody @Valid CadastrarCategoriaRequest request) {
-        Categoria categoria = request.toCategoria();
+    public Categoria inserir(CadastrarCategoriaRequest cadastrarCategoriaRequest) {
+        Categoria categoria = cadastrarCategoriaRequest.toCategoria();
         categoriaRepository.save(categoria);
 
         return categoria;
     }
 
-    public void atualizar(Long id, AtualizarCategoriaRequest request) {
+    public void atualizar(Long id, AtualizarCategoriaRequest atualizarCategoriaRequest) {
         Categoria categoriaEncontrada = selecionarPorId(id);
-        categoriaEncontrada.setNome(request.getNome());
+        categoriaEncontrada.setNome(atualizarCategoriaRequest.getNome());
 
         categoriaRepository.save(categoriaEncontrada);
     }

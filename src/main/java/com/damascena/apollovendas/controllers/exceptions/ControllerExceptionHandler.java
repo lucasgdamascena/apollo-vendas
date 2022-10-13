@@ -2,6 +2,7 @@ package com.damascena.apollovendas.controllers.exceptions;
 
 import com.damascena.apollovendas.services.exceptions.IntegridadeVioladaException;
 import com.damascena.apollovendas.services.exceptions.ObjetoNaoEncontradoException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -15,30 +16,32 @@ import javax.servlet.http.HttpServletRequest;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(ObjetoNaoEncontradoException.class)
-    public ResponseEntity<MensagemPadrao> objetoNaoEncontrado(ObjetoNaoEncontradoException exception,
-                                                              HttpServletRequest request) {
+    public ResponseEntity<MensagemPadrao> objetoNaoEncontrado(ObjetoNaoEncontradoException objetoNaoEncontradoException,
+                                                              HttpServletRequest httpServletRequest) {
         MensagemPadrao mensagemPadrao =
-                new MensagemPadrao(HttpStatus.NOT_FOUND.value(), exception.getMessage(), System.currentTimeMillis());
+                new MensagemPadrao(HttpStatus.NOT_FOUND.value(),
+                        objetoNaoEncontradoException.getMessage(), System.currentTimeMillis());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(mensagemPadrao);
     }
 
     @ExceptionHandler(IntegridadeVioladaException.class)
-    public ResponseEntity<MensagemPadrao> integridadeViolada(IntegridadeVioladaException exception,
-                                                             HttpServletRequest request) {
+    public ResponseEntity<MensagemPadrao> integridadeViolada(IntegridadeVioladaException integridadeVioladaException,
+                                                             HttpServletRequest httpServletRequest) {
         MensagemPadrao mensagemPadrao =
-                new MensagemPadrao(HttpStatus.BAD_REQUEST.value(), exception.getMessage(), System.currentTimeMillis());
+                new MensagemPadrao(HttpStatus.BAD_REQUEST.value(),
+                        integridadeVioladaException.getMessage(), System.currentTimeMillis());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensagemPadrao);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<MensagemPadrao> argumentacaoInvalida(MethodArgumentNotValidException exception,
-                                                            HttpServletRequest request) {
+    public ResponseEntity<MensagemPadrao> argumentacaoInvalida(MethodArgumentNotValidException methodArgumentNotValidException,
+                                                               HttpServletRequest httpServletRequest) {
         ValidacaoErro validacaoErro =
                 new ValidacaoErro(HttpStatus.BAD_REQUEST.value(), "Erro de Validação", System.currentTimeMillis());
 
-        for (FieldError fieldError : exception.getBindingResult().getFieldErrors()) {
+        for (FieldError fieldError : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
             validacaoErro.adicionarErro(fieldError.getField(), fieldError.getDefaultMessage());
         }
 
