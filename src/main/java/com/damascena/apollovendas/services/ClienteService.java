@@ -22,12 +22,16 @@ public class ClienteService {
     private CidadeRepository cidadeRepository;
     private EnderecoRepository enderecoRepository;
 
+    private EmailService emailService;
+
     public ClienteService(ClienteRepository clienteRepository,
                           CidadeRepository cidadeRepository,
-                          EnderecoRepository enderecoRepository) {
+                          EnderecoRepository enderecoRepository,
+                          EmailService emailService) {
         this.clienteRepository = clienteRepository;
         this.cidadeRepository = cidadeRepository;
         this.enderecoRepository = enderecoRepository;
+        this.emailService = emailService;
     }
 
     public Cliente selecionarPorId(Long id) {
@@ -40,6 +44,8 @@ public class ClienteService {
         Optional<Cidade> cidade = cidadeRepository.findById(cadastrarClienteRequest.getCidadeId());
         Cliente cliente = clienteRepository.save(cadastrarClienteRequest.toCliente(cidade));
         enderecoRepository.save(cliente.getEnderecos().get(0));
+
+        emailService.confirmarCliente(cliente);
 
         return cliente;
     }

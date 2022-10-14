@@ -1,6 +1,8 @@
 package com.damascena.apollovendas.configuration;
 
 import com.damascena.apollovendas.services.DataBaseService;
+import com.damascena.apollovendas.services.EmailService;
+import com.damascena.apollovendas.services.MockEmailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -25,5 +27,10 @@ public class TestProfile {
         } catch (ParseException parseException) {
             return false;
         }
+    }
+
+    @Bean
+    public EmailService emailService() {
+        return new MockEmailService();
     }
 }

@@ -117,4 +117,22 @@ public class Cliente implements Serializable {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+
+        sb.append(nome).append('\'');
+        sb.append(", email='").append(email).append('\'');
+
+        for(String telefone : this.telefones){
+            sb.append(", telefone=").append(telefone);
+        }
+
+        for(Endereco endereco : this.enderecos){
+            sb.append(", endereco=").append(endereco.toString());
+        }
+
+        return sb.toString();
+    }
 }
