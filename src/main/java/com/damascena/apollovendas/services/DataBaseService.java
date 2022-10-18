@@ -2,8 +2,10 @@ package com.damascena.apollovendas.services;
 
 import com.damascena.apollovendas.domains.*;
 import com.damascena.apollovendas.domains.enums.EstadoPagamento;
+import com.damascena.apollovendas.domains.enums.Perfil;
 import com.damascena.apollovendas.domains.enums.TipoCliente;
 import com.damascena.apollovendas.repositories.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -98,9 +100,18 @@ public class DataBaseService {
         estadoRepository.saveAll(Arrays.asList(estado1, estado2));
         cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 
-        Cliente cliente1 = new Cliente("Maria Silva", "maria@gmail.com",
+        Cliente cliente1 = new Cliente("Maria Silva",
+                "maria@gmail.com",
+                "123",
                 "36378912377", TipoCliente.PESSOA_FISICA);
         cliente1.getTelefones().addAll(Arrays.asList("27363323", "93838993"));
+
+        Cliente cliente2 = new Cliente("Ana",
+                "ana@gmail.com",
+                "123",
+                "63575854084", TipoCliente.PESSOA_FISICA);
+        cliente2.getTelefones().addAll(Collections.singletonList("27363323"));
+        cliente2.adicionarPerfil(Perfil.ADMIN);
 
         Endereco endereco1 = new Endereco("Rua Flores",
                 "300", "Apto 303", "Jardim", "38220834", cliente1, cidade1);
@@ -108,8 +119,12 @@ public class DataBaseService {
         Endereco endereco2 = new Endereco("Avenida Matos",
                 "105", "Sala 800", "Centro", "38777012", cliente1, cidade2);
 
-        clienteRepository.saveAll(Collections.singletonList(cliente1));
-        enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
+        Endereco endereco3 = new Endereco("Avenida Floriano",
+                "33", null, "Centro", "06178023", cliente2, cidade2);
+
+
+        clienteRepository.saveAll(Arrays.asList(cliente1, cliente2));
+        enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2, endereco3));
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 

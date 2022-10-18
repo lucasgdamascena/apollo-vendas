@@ -22,18 +22,16 @@ public enum EstadoPagamento {
         return descricao;
     }
 
-    public static EstadoPagamento toEnum(Integer codigo) throws IllegalAccessException {
+    public static EstadoPagamento toEnum(Integer codigo) {
 
-        if (codigo == null) {
-            return null;
-        }
-
-        for (EstadoPagamento estadoPagamento : EstadoPagamento.values()) {
-            if (codigo.equals(estadoPagamento.getCodigo())) {
-                return estadoPagamento;
+        if (codigo != null) {
+            for (EstadoPagamento estadoPagamento : EstadoPagamento.values()) {
+                if (codigo.equals(estadoPagamento.getCodigo())) {
+                    return estadoPagamento;
+                }
             }
         }
 
-        throw new IllegalAccessException("Código inválido: " + codigo);
+        return null;
     }
 }

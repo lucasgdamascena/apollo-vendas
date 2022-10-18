@@ -1,13 +1,16 @@
 package com.damascena.apollovendas.domains;
 
+import com.damascena.apollovendas.domains.enums.Perfil;
 import com.damascena.apollovendas.domains.enums.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Cliente implements Serializable {
@@ -27,6 +30,11 @@ public class Cliente implements Serializable {
 
     @Column(unique = true, nullable = false)
     @NotBlank
+    @JsonIgnore
+    private String senha;
+
+    @Column(unique = true, nullable = false)
+    @NotBlank
     private String documento;
 
     @Column(nullable = false)
@@ -42,25 +50,33 @@ public class Cliente implements Serializable {
     @CollectionTable(name = "telefone")
     private Set<String> telefones = new HashSet<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "perfis")
+    private Set<Integer> perfis = new HashSet<>();
+
     @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 
     @Deprecated
     public Cliente() {
+        adicionarPerfil(Perfil.CLIENTE);
     }
 
-    public Cliente(String nome, String email, String documento, TipoCliente tipoCliente) {
-        validarArgumentos(nome, email, documento, tipoCliente);
+    public Cliente(String nome, String email, String senha, String documento, TipoCliente tipoCliente) {
+        validarArgumentos(nome, email, senha, documento, tipoCliente);
         this.nome = nome;
         this.email = email;
+        this.senha = new BCryptPasswordEncoder().encode(senha);
         this.documento = documento;
         this.tipoCliente = tipoCliente.getCodigo();
+        adicionarPerfil(Perfil.CLIENTE);
     }
 
-    private void validarArgumentos(String nome, String email, String documento, TipoCliente tipoCliente) {
+    private void validarArgumentos(String nome, String email, String senha, String documento, TipoCliente tipoCliente) {
         Assert.hasText(nome, "O argumento 'nome' deve ser preenchido.");
         Assert.hasText(email, "O argumento 'email' deve ser preenchido.");
+        Assert.hasText(senha, "O argumento 'senha' deve ser preenchido.");
         Assert.hasText(documento, "O argumento 'documento' deve ser preenchido.");
         Assert.notNull(tipoCliente, "O argumento 'tipoCliente' não possui valor definido.");
     }
@@ -85,6 +101,10 @@ public class Cliente implements Serializable {
         this.email = email;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
     public String getDocumento() {
         return documento;
     }
@@ -103,6 +123,14 @@ public class Cliente implements Serializable {
 
     public List<Pedido> getPedidos() {
         return pedidos;
+    }
+
+    public Set<Perfil> getPerfis() {
+        return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void adicionarPerfil(Perfil perfil) {
+        this.perfis.add(perfil.getCodigo());
     }
 
     @Override
@@ -125,11 +153,11 @@ public class Cliente implements Serializable {
         sb.append(nome).append('\'');
         sb.append(", email='").append(email).append('\'');
 
-        for(String telefone : this.telefones){
+        for (String telefone : this.telefones) {
             sb.append(", telefone=").append(telefone);
         }
 
-        for(Endereco endereco : this.enderecos){
+        for (Endereco endereco : this.enderecos) {
             sb.append(", endereco=").append(endereco.toString());
         }
 

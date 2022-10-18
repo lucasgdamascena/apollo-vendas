@@ -50,7 +50,7 @@ public abstract class Pagamento implements Serializable {
         return id;
     }
 
-    public EstadoPagamento getEstadoPagamento() throws IllegalAccessException {
+    public EstadoPagamento getEstadoPagamento() {
         return EstadoPagamento.toEnum(estadoPagamento);
     }
 

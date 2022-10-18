@@ -21,11 +21,14 @@ public class CadastrarClienteRequest {
     private String email;
 
     @NotBlank(message = "Preenchimento obrigatório")
+    private String senha;
+
+    @NotBlank(message = "Preenchimento obrigatório")
     private String documento;
 
     @NotNull(message = "Valor Inválido")
     @Positive
-    @Max(value = 2, message = "Escolha um valor válido" )
+    @Max(value = 2, message = "Escolha um valor válido")
     private Integer tipoCliente;
 
     @NotBlank(message = "Preenchimento obrigatório")
@@ -51,11 +54,12 @@ public class CadastrarClienteRequest {
     @NotNull(message = "Valor Inválido")
     private Long cidadeId;
 
-    public CadastrarClienteRequest(String nome, String email, String documento, Integer tipoCliente, String logradouro,
-                                   String numero, String complemento, String bairro, String cep, String telefone1,
-                                   String telefone2, String telefone3, Long cidadeId) {
+    public CadastrarClienteRequest(String nome, String email, String senha, String documento, Integer tipoCliente,
+                                   String logradouro, String numero, String complemento, String bairro, String cep,
+                                   String telefone1, String telefone2, String telefone3, Long cidadeId) {
         this.nome = nome;
         this.email = email;
+        this.senha = senha;
         this.documento = documento;
         this.tipoCliente = tipoCliente;
         this.logradouro = logradouro;
@@ -75,6 +79,10 @@ public class CadastrarClienteRequest {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getSenha() {
+        return senha;
     }
 
     public String getDocumento() {
@@ -125,11 +133,7 @@ public class CadastrarClienteRequest {
 
         Cliente cliente = null;
 
-        try {
-            cliente = new Cliente(nome, email, documento, TipoCliente.toEnum(tipoCliente));
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        cliente = new Cliente(nome, email, senha, documento, TipoCliente.toEnum(tipoCliente));
 
         Endereco endereco = new Endereco(logradouro, numero, complemento,
                 bairro, cep, cliente, cidade.get());

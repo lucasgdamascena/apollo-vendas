@@ -1,14 +1,14 @@
 package com.damascena.apollovendas.domains.enums;
 
-public enum TipoCliente {
+public enum Perfil {
 
-    PESSOA_FISICA(1, "Pessoa Física"),
-    PESSOA_JURIDICA(2, "Pessoa Jurídica");
+    ADMIN(1, "ROLE_ADMIN"),
+    CLIENTE(2, "ROLE_CLIENTE");
 
     private Integer codigo;
     private String descricao;
 
-    private TipoCliente(Integer codigo, String descricao) {
+    private Perfil(Integer codigo, String descricao) {
         this.codigo = codigo;
         this.descricao = descricao;
     }
@@ -21,12 +21,12 @@ public enum TipoCliente {
         return descricao;
     }
 
-    public static TipoCliente toEnum(Integer codigo) {
+    public static Perfil toEnum(Integer codigo) {
 
         if (codigo != null) {
-            for (TipoCliente tipoCliente : TipoCliente.values()) {
-                if (codigo.equals(tipoCliente.getCodigo())) {
-                    return tipoCliente;
+            for (Perfil perfil : Perfil.values()) {
+                if (codigo.equals(perfil.getCodigo())) {
+                    return perfil;
                 }
             }
         }
