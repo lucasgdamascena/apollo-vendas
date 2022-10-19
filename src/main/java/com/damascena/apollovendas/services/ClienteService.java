@@ -2,11 +2,14 @@ package com.damascena.apollovendas.services;
 
 import com.damascena.apollovendas.domains.Cidade;
 import com.damascena.apollovendas.domains.Cliente;
+import com.damascena.apollovendas.domains.enums.Perfil;
 import com.damascena.apollovendas.dto.request.AtualizarClienteRequest;
 import com.damascena.apollovendas.dto.request.CadastrarClienteRequest;
 import com.damascena.apollovendas.repositories.CidadeRepository;
 import com.damascena.apollovendas.repositories.ClienteRepository;
 import com.damascena.apollovendas.repositories.EnderecoRepository;
+import com.damascena.apollovendas.security.UsuarioSpringSecurity;
+import com.damascena.apollovendas.services.exceptions.AutorizacaoException;
 import com.damascena.apollovendas.services.exceptions.IntegridadeVioladaException;
 import com.damascena.apollovendas.services.exceptions.ObjetoNaoEncontradoException;
 
@@ -35,6 +38,15 @@ public class ClienteService {
     }
 
     public Cliente selecionarPorId(Long id) {
+
+        UsuarioSpringSecurity usuarioSpringSecurity = UsuarioService.autenticado();
+
+        if (usuarioSpringSecurity == null ||
+                !usuarioSpringSecurity.hasRole(Perfil.ADMIN) &&
+                        !id.equals(usuarioSpringSecurity.getId())) {
+            throw new AutorizacaoException("Acesso Negado");
+        }
+
         Optional<Cliente> cliente = clienteRepository.findById(id);
         return cliente.orElseThrow(() ->
                 new ObjetoNaoEncontradoException("Objeto não encontrado. Id: " + id + ", Tipo: " + Cliente.class));

@@ -1,5 +1,6 @@
 package com.damascena.apollovendas.controllers.exceptions;
 
+import com.damascena.apollovendas.services.exceptions.AutorizacaoException;
 import com.damascena.apollovendas.services.exceptions.IntegridadeVioladaException;
 import com.damascena.apollovendas.services.exceptions.ObjetoNaoEncontradoException;
 
@@ -50,11 +51,21 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<MensagemPadrao> AccessDenied(AccessDeniedException accessDeniedException,
-                                                       HttpServletRequest httpServletRequest) {
+    public ResponseEntity<MensagemPadrao> AccessoNegado(AccessDeniedException accessDeniedException,
+                                                        HttpServletRequest httpServletRequest) {
 
         MensagemPadrao mensagemPadrao
                 = new MensagemPadrao(HttpStatus.FORBIDDEN.value(), accessDeniedException.getMessage(), System.currentTimeMillis());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(mensagemPadrao);
+    }
+
+    @ExceptionHandler(AutorizacaoException.class)
+    public ResponseEntity<MensagemPadrao> autorizacaoProibida(AutorizacaoException autorizacaoException,
+                                                              HttpServletRequest httpServletRequest) {
+        MensagemPadrao mensagemPadrao =
+                new MensagemPadrao(HttpStatus.FORBIDDEN.value(),
+                        autorizacaoException.getMessage(), System.currentTimeMillis());
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(mensagemPadrao);
     }
