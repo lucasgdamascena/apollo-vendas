@@ -1,6 +1,7 @@
 package com.damascena.apollovendas.configuration;
 
 import com.damascena.apollovendas.security.JWTFiltroAutenticacao;
+import com.damascena.apollovendas.security.JWTFiltroAutorizacao;
 import com.damascena.apollovendas.security.JWTUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,7 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] PUBLIC_MATCHERS_GET = {
             "/produtos/**",
             "/categorias/**",
-            "/clientes/**",
             "/estados/**"
     };
 
@@ -60,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         http.addFilter(new JWTFiltroAutenticacao(authenticationManager(), jwtUtil));
+        http.addFilter(new JWTFiltroAutorizacao(authenticationManager(), jwtUtil, userDetailsService));
 
         //Backend não criará sessão de usuário
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
