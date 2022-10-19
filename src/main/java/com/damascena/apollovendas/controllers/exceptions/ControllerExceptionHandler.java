@@ -5,6 +5,7 @@ import com.damascena.apollovendas.services.exceptions.ObjetoNaoEncontradoExcepti
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -46,5 +47,15 @@ public class ControllerExceptionHandler {
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validacaoErro);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<MensagemPadrao> AccessDenied(AccessDeniedException accessDeniedException,
+                                                       HttpServletRequest httpServletRequest) {
+
+        MensagemPadrao mensagemPadrao
+                = new MensagemPadrao(HttpStatus.FORBIDDEN.value(), accessDeniedException.getMessage(), System.currentTimeMillis());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(mensagemPadrao);
     }
 }

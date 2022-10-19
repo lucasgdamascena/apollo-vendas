@@ -6,6 +6,7 @@ import com.damascena.apollovendas.dto.request.CadastrarClienteRequest;
 import com.damascena.apollovendas.services.ClienteService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -44,6 +45,7 @@ public class ClienteController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity deletar(@PathVariable("id") Long id) {
         clienteService.deletar(id);

@@ -8,6 +8,7 @@ import com.damascena.apollovendas.services.CategoriaService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -50,6 +51,7 @@ public class CategoriaController {
         return ResponseEntity.ok().body(categoriasPaginadasResponse);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity inserir(@RequestBody @Valid CadastrarCategoriaRequest cadastrarCategoriaRequest) {
         Categoria categoria = categoriaService.inserir(cadastrarCategoriaRequest);
@@ -59,6 +61,7 @@ public class CategoriaController {
         return ResponseEntity.created(uri).build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PatchMapping(value = "/{id}")
     public ResponseEntity atualizar(@PathVariable("id") Long id,
                                     @RequestBody @Valid AtualizarCategoriaRequest atualizarCategoriaRequest) {
@@ -66,6 +69,7 @@ public class CategoriaController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity deletar(@PathVariable("id") Long id) {
         categoriaService.deletar(id);
