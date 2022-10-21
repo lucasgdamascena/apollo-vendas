@@ -25,6 +25,7 @@ public class AutorizacaoController {
         UsuarioSpringSecurity usuarioSpringSecurity = UsuarioService.autenticado();
         String token = jwtUtil.gerarToken(usuarioSpringSecurity.getUsername());
         httpServletResponse.addHeader("Authorization", "Bearer " + token);
+        httpServletResponse.addHeader("access-control-expose-headers", "Authorization");
 
         return ResponseEntity.noContent().build();
     }

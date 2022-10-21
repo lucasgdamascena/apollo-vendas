@@ -32,9 +32,9 @@ public class JWTFiltroAutorizacao extends BasicAuthenticationFilter {
                                     FilterChain chain) throws IOException, ServletException {
 
         String header = request.getHeader("Authorization");
-        String token = header.substring(7);
 
         if (header != null && header.startsWith("Bearer ")) {
+            String token = header.substring(7);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = getAuthentication(token);
 
             if (usernamePasswordAuthenticationToken != null) {

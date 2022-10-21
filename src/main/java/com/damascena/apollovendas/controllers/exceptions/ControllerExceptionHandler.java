@@ -21,8 +21,10 @@ public class ControllerExceptionHandler {
     public ResponseEntity<MensagemPadrao> objetoNaoEncontrado(ObjetoNaoEncontradoException objetoNaoEncontradoException,
                                                               HttpServletRequest httpServletRequest) {
         MensagemPadrao mensagemPadrao =
-                new MensagemPadrao(HttpStatus.NOT_FOUND.value(),
-                        objetoNaoEncontradoException.getMessage(), System.currentTimeMillis());
+                new MensagemPadrao(System.currentTimeMillis(),
+                        HttpStatus.NOT_FOUND.value(), "Não encontrado",
+                        objetoNaoEncontradoException.getMessage(),
+                        httpServletRequest.getRequestURI());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(mensagemPadrao);
     }
@@ -31,8 +33,10 @@ public class ControllerExceptionHandler {
     public ResponseEntity<MensagemPadrao> integridadeViolada(IntegridadeVioladaException integridadeVioladaException,
                                                              HttpServletRequest httpServletRequest) {
         MensagemPadrao mensagemPadrao =
-                new MensagemPadrao(HttpStatus.BAD_REQUEST.value(),
-                        integridadeVioladaException.getMessage(), System.currentTimeMillis());
+                new MensagemPadrao(System.currentTimeMillis(),
+                        HttpStatus.BAD_REQUEST.value(), "Integridade de dados",
+                        integridadeVioladaException.getMessage(),
+                        httpServletRequest.getRequestURI());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensagemPadrao);
     }
@@ -41,31 +45,39 @@ public class ControllerExceptionHandler {
     public ResponseEntity<MensagemPadrao> argumentacaoInvalida(MethodArgumentNotValidException methodArgumentNotValidException,
                                                                HttpServletRequest httpServletRequest) {
         ValidacaoErro validacaoErro =
-                new ValidacaoErro(HttpStatus.BAD_REQUEST.value(), "Erro de Validação", System.currentTimeMillis());
+                new ValidacaoErro(System.currentTimeMillis(),
+                        HttpStatus.UNPROCESSABLE_ENTITY.value(), "Erro de validação",
+                        methodArgumentNotValidException.getMessage(),
+                        httpServletRequest.getRequestURI());
 
         for (FieldError fieldError : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
             validacaoErro.adicionarErro(fieldError.getField(), fieldError.getDefaultMessage());
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validacaoErro);
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<MensagemPadrao> AccessoNegado(AccessDeniedException accessDeniedException,
-                                                        HttpServletRequest httpServletRequest) {
-
-        MensagemPadrao mensagemPadrao
-                = new MensagemPadrao(HttpStatus.FORBIDDEN.value(), accessDeniedException.getMessage(), System.currentTimeMillis());
-
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(mensagemPadrao);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(validacaoErro);
     }
 
     @ExceptionHandler(AutorizacaoException.class)
     public ResponseEntity<MensagemPadrao> autorizacaoProibida(AutorizacaoException autorizacaoException,
                                                               HttpServletRequest httpServletRequest) {
         MensagemPadrao mensagemPadrao =
-                new MensagemPadrao(HttpStatus.FORBIDDEN.value(),
-                        autorizacaoException.getMessage(), System.currentTimeMillis());
+                new MensagemPadrao(System.currentTimeMillis(),
+                        HttpStatus.FORBIDDEN.value(), "Acesso negado",
+                        autorizacaoException.getMessage(),
+                        httpServletRequest.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(mensagemPadrao);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<MensagemPadrao> accessoNegado(AccessDeniedException accessDeniedException,
+                                                        HttpServletRequest httpServletRequest) {
+
+        MensagemPadrao mensagemPadrao
+                = new MensagemPadrao(System.currentTimeMillis(),
+                HttpStatus.FORBIDDEN.value(), "Acesso negado",
+                accessDeniedException.getMessage(),
+                httpServletRequest.getRequestURI());
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(mensagemPadrao);
     }

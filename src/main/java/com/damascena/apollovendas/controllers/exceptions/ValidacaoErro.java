@@ -7,8 +7,8 @@ public class ValidacaoErro extends MensagemPadrao {
 
     private List<MensagemCampo> erros = new ArrayList<>();
 
-    public ValidacaoErro(Integer status, String mensagem, Long timestamp) {
-        super(status, mensagem, timestamp);
+    public ValidacaoErro(Long timestamp, Integer status, String error, String message, String path) {
+        super(timestamp, status, error, message, path);
     }
 
     public List<MensagemCampo> getErros() {
